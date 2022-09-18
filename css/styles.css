@@ -1,0 +1,77 @@
+:root {
+  --blue: #0d6efd;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #d63384;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #198754;
+  --teal: #20c997;
+  --cyan: #0dcaf0;
+  --gray: #adb5bd;
+  --black: #000000;
+  --white: #ffffff;
+  --dark: #332d2d;
+  --light: #fbfbfb;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
+main > .container {
+  padding: 60px 15px 0;
+  margin-bottom: 5rem;
+}
+.sticky-footer {
+  position: sticky;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--green);
+}
+
+p {
+  color: var(--dark);
+}
+
+.checklist {
+  color: var(--red);
+}
+
+.social {
+  color: var(--light);
+  opacity: 0.75;
+}
+
+.social:hover {
+  opacity: 0.5;
+}
+
+.jsIcon {
+  color: #f7df1e;
+}
+
+.bsIcon {
+  color: #7952b3;
+}
+
+.css3Icon {
+  color: #264de4;
+}
+
+.html5Icon {
+  color: #e44d26;
+}
