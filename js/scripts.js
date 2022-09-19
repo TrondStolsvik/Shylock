@@ -23,6 +23,12 @@ function getValues() {
   //Declare a variable totalInterest and initialize to 0
   let totalInterest = 0;
 
+  //Declare a variable totalPrincipal and initialize to 0
+  let totalPrincipal = 0;
+
+  //Declare a variable mPayments and initialize to 0
+  let mPayments = 0;
+
   //Declare a variable as previousBalance and initialize to 0
   let previousBalance = loanAmount;
 
@@ -44,8 +50,14 @@ function getValues() {
       //using loan amount, term and interest rate as the parameters
       let paymentsMonth = monthlyPayments(loanAmount, term, interestRate);
 
+      //Replace mPayments with new monthly payment amount
+      mPayments = paymentsMonth;
+
       //Declare a variable priPay and store the result of monthlyPayments - monthlyInterest
       let priPay = paymentsMonth - interestMonth;
+
+      //Increment totalPrincipal += priPay
+      totalPrincipal += priPay;
 
       //Update previousBalance to be the result of previous balance - priPay
       previousBalance = previousBalance - priPay;
@@ -61,6 +73,9 @@ function getValues() {
         previousBalance
       );
     }
+    let totalCost = totalPrincipal + totalInterest;
+    //Call displayTotals to display the totals at the top of the page
+    displayTotals(mPayments, totalPrincipal, totalInterest, totalCost);
   } else {
     return 0;
   }
@@ -118,4 +133,23 @@ function displayLoan(
 
   //Append the tableRow to the tableBody
   tableBody.appendChild(tableRow);
+}
+
+//Display totals
+function displayTotals(mPayments, totalPrincipal, totalInterest, totalCost) {
+  //Clear the html
+  document.getElementById("mPayments").innerHTML = "";
+  document.getElementById("totalPrincipal").innerHTML = "";
+  document.getElementById("totalInterest").innerHTML = "";
+  document.getElementById("totalCost").innerHTML = "";
+
+  //Display the totals at the top of the page
+  document.getElementById("mPayments").innerHTML = `$${mPayments.toFixed(2)}`;
+  document.getElementById(
+    "totalPrincipal"
+  ).innerHTML = `$${totalPrincipal.toFixed(2)}`;
+  document.getElementById(
+    "totalInterest"
+  ).innerHTML = `$${totalInterest.toFixed(2)}`;
+  document.getElementById("totalCost").innerHTML = `$${totalCost.toFixed(2)}`;
 }
