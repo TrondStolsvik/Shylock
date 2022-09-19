@@ -185,8 +185,10 @@
                     <th class="ps-2">Total Interest</th>
                     <th class="ps-2">Balance</th>
                   </tr>
-                  <!-- Results go here -->
                 </thead>
+                <tbody id="results">
+                  <!-- Results go here -->
+                </tbody>
               </table>
             </div>
           </div>
@@ -246,7 +248,7 @@
         <td></td>
         <td></td>
         <td></td>
-      </td>
+      </tr>
     </template>
     <!-- Bootstrap JS -->
     <script
@@ -258,7 +260,9 @@
     <!-- Custom Scripts -->
     <script src="js/scripts.js"></script>
     <script>
-      document.getElementById("btnCalculate").addEventListener("click", getValues);
+      document
+        .getElementById("btnCalculate")
+        .addEventListener("click", getValues);
     </script>
   </body>
 </html>
