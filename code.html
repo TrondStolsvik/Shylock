@@ -89,18 +89,241 @@
           <div class="col-12 col-md-8">
             <pre class="line-numbers">
               <code class="language-javascript">
-                function HelloWorld() {
-                  alert("Hello World!");
-                }
+                //Get the values from the page
+function getValues() {
+  //Clear the dom
+  document.getElementById("results").innerHTML = "";
+
+  //Get the value from loan amount and store it in a variable
+  let loanAmount = document.getElementById("loanAmount").value;
+
+  //Get the value from term and store it in a variable
+  let term = document.getElementById("term").value;
+
+  //Get the value from interest rate and store it in a variable
+  let interestRate = document.getElementById("interestRate").value;
+
+  //Parse loanAmount, term and interestRate to integers and/or float
+  loanAmount = parseFloat(loanAmount);
+  term = parseInt(term);
+  interestRate = parseFloat(interestRate);
+
+  //Declare a variable currentTerm and initialize to 0
+  let currentTerm = 0;
+
+  //Declare a variable totalInterest and initialize to 0
+  let totalInterest = 0;
+
+  //Declare a variable totalPrincipal and initialize to 0
+  let totalPrincipal = 0;
+
+  //Declare a variable mPayments and initialize to 0
+  let mPayments = 0;
+
+  //Declare a variable as previousBalance and initialize to 0
+  let previousBalance = loanAmount;
+
+  //If-statement to check if previous balance is equal to 0
+  if (previousBalance == loanAmount) {
+    //If true, for-loop through the length of term
+    for (let i = 0; i < term; i++) {
+      //Increment currentTerm += 1
+      currentTerm += 1;
+
+      //Call monthlyInterest() and store it's data in a variable called interestMonth,
+      //using previous balance and interest rate as the parameters
+      let interestMonth = monthlyInterest(previousBalance, interestRate);
+
+      //Increment totalInterest += interestMonth
+      totalInterest += interestMonth;
+
+      //Call monthlyPayments() and store it's data in a variable called paymentsMonth,
+      //using loan amount, term and interest rate as the parameters
+      let paymentsMonth = monthlyPayments(loanAmount, term, interestRate);
+
+      //Replace mPayments with new monthly payment amount
+      mPayments = paymentsMonth;
+
+      //Declare a variable priPay and store the result of monthlyPayments - monthlyInterest
+      let priPay = paymentsMonth - interestMonth;
+
+      //Increment totalPrincipal += priPay
+      totalPrincipal += priPay;
+
+      //Update previousBalance to be the result of previous balance - priPay
+      previousBalance = previousBalance - priPay;
+
+      //Call displayLoan() using
+      //term, currentTerm, paymentsMonth, priPay, interestMonth, totalInterest and previousBalance
+      displayLoan(
+        currentTerm,
+        paymentsMonth,
+        priPay,
+        interestMonth,
+        totalInterest,
+        previousBalance
+      );
+    }
+    let totalCost = totalPrincipal + totalInterest;
+    //Call displayTotals to display the totals at the top of the page
+    displayTotals(mPayments, totalPrincipal, totalInterest, totalCost);
+  } else {
+    return 0;
+  }
+}
+
+//Calculate monthly interest
+function monthlyInterest(previousBalance, interestRate) {
+  //Declare variable intPay as "previousBalance * (interest rate / 1200)"
+  let intPay = previousBalance * (interestRate / 1200);
+
+  //return intPay
+  return intPay;
+}
+
+//Calculate montly payments
+function monthlyPayments(loanAmount, term, interestRate) {
+  //Declare variable monthPay as
+  //"(loan amount) * (interest rate / 1200) / (1 - (1 + (interest rate / 1200)**(-term)"
+  let monthPay =
+    (loanAmount * (interestRate / 1200)) /
+    (1 - (1 + interestRate / 1200) ** -term);
+
+  //return monthPay
+  return monthPay;
+}
+
+//Display the header totals and table
+function displayLoan(
+  currentTerm,
+  paymentsMonth,
+  priPay,
+  interestMonth,
+  totalInterest,
+  previousBalance
+) {
+  //Get tableBody element
+  let tableBody = document.getElementById("results");
+
+  //Get templateRow element from template
+  let templateRow = document.getElementById("loanTemplate");
+
+  //Declare a variable tableRow and store the content from the template row
+  let tableRow = document.importNode(templateRow.content, true);
+
+  //Declare a variable rowCols and store only the "td" elements
+  let rowCols = tableRow.querySelectorAll("td");
+
+  //Model the row one column at a time and store the data from the parameters in sequence
+  rowCols[0].textContent = currentTerm;
+  rowCols[1].textContent = `$${paymentsMonth.toFixed(2)}`;
+  rowCols[2].textContent = `$${priPay.toFixed(2)}`;
+  rowCols[3].textContent = `$${interestMonth.toFixed(2)}`;
+  rowCols[4].textContent = `$${totalInterest.toFixed(2)}`;
+  rowCols[5].textContent = `$${Math.abs(previousBalance.toFixed(2))}`;
+
+  //Append the tableRow to the tableBody
+  tableBody.appendChild(tableRow);
+}
+
+//Display totals
+function displayTotals(mPayments, totalPrincipal, totalInterest, totalCost) {
+  //Clear the html
+  document.getElementById("mPayments").innerHTML = "";
+  document.getElementById("totalPrincipal").innerHTML = "";
+  document.getElementById("totalInterest").innerHTML = "";
+  document.getElementById("totalCost").innerHTML = "";
+
+  //Display the totals at the top of the page
+  document.getElementById("mPayments").innerHTML = `$${mPayments.toFixed(2)}`;
+  document.getElementById(
+    "totalPrincipal"
+  ).innerHTML = `$${totalPrincipal.toFixed(2)}`;
+  document.getElementById(
+    "totalInterest"
+  ).innerHTML = `$${totalInterest.toFixed(2)}`;
+  document.getElementById("totalCost").innerHTML = `$${totalCost.toFixed(2)}`;
+}
+
               </code>
             </pre>
           </div>
           <div class="col-12 col-md-4">
-            <p>The Code is structured in one function.</p>
-            <h5>HelloWorld()</h5>
+            <p>The Code is structured in five functions.</p>
+            <h5>getValues()</h5>
             <p>
-              HelloWorld() is a function that displays an alert with a message
-              of "Hello World!"
+              The function getValues() first gets the values of the inputs
+              (amount, term and interest) from the dom. Next these values are
+              parsed to integers/floats to hold whole and floating point
+              numbers.<br /><br />Next we declare and initialize several
+              variables that we use later for various purposes.<br /><br />Now
+              we start with an if-statement to check if the variable
+              previousValue is equal to loanAmount. This is because we don't
+              want to start a for-loop in this case unless this is true, because
+              we want to update previousValue over the course of the loop.<br /><br />If
+              for whatever reasons these values are not the same, we simply
+              return 0 in the else-statement, but if it evaluates to true, we
+              run a for-loop.<br /><br />We run the for-loop, one incrementation
+              at a time, for as long as our index is less than our term.<br /><br />Every
+              time we iterate the loop, we increment currentTerm by one. We use
+              this to display each month in our table. Next we call
+              monthlyInterest() with previousBalance and interestRate as it's
+              parameters and store the result in interestMonth.<br /><br />Now
+              we add the value of interestMonth that we just calculated, to the
+              current value of totalInterest, which we initiated as 0 before the
+              loop.<br /><br />Next we call monthlyPayments() with the
+              loanAmount, term and interestRate as it's parameters and we store
+              the result of this in paymentsMonth. Now we set mPayments to the
+              value of paymentsMonth, because we will use this variable later
+              for our final display.<br /><br />Next we calculate the principal
+              payment by subtracting interestMonth from paymentsMonth and store
+              it in priPay. We then add the value of priPay to the current value
+              of totalPrincipal.<br /><br />We also need to get the new
+              previousBalance by subtracting priPay from the current
+              previousBalance.<br /><br />Next we call displayLoan() to display
+              our table of payments. We pass currentTerm, paymentsMonth, priPay,
+              interestMonth, totalInteres and previousBalance as parameters.<br /><br />After
+              the for-loop is finished, we declare totalCost and set it's result
+              to totalPrincipal + totalInterest.<br /><br />Finally, to display
+              the totals at the top of the page, we call displayTotals() with
+              mPayments, totalPrincipal, totalInterest and totalCost as
+              parameters.
+            </p>
+            <h5>monthlyInterest()</h5>
+            <p>
+              The function monthlyInterest() takes previousBalance and
+              interestRate as parameters. It formulates the monthly interest and
+              multiplies it with the current previousBalance to find the
+              interest payment for that month and store it in intPay.<br /><br />To
+              finish it we return intPay.
+            </p>
+            <h5>monthlyPayments()</h5>
+            <p>
+              The function monthlyPayments() takes the parameters, loanAmount,
+              term and interest rate. It calculates the monthly payment using
+              the loanAmount, interestRate and term, and stores it in
+              monthPay.<br /><br />To finish this one, we return monthPay.
+            </p>
+            <h5>displayLoan()</h5>
+            <p>
+              The function displayLoan() takes the parameters currentTerm,
+              paymentsMonth, priPay, interestMonth, totalInterest and previous
+              balance in order to display this data in a table.<br /><br />Next
+              we get the tableBody using the ID "results", the templateRow from
+              the ID "loanTemplate" and the content from the templateRow by
+              importing it's content using importNode.<br /><br />Next we store
+              the "td" elements in the rowCols variable and create a row of
+              columns to be injected. We specify ".toFixed(2)" in order to force
+              two decimals to aid readability.<br /><br />Finally we append the
+              tableRow to the tableBody.
+            </p>
+            <h5>displayTotals()</h5>
+            <p>
+              The function displayTotals() takes the parameters mPayments,
+              totalPrincipal, totalInterest and totalCost which we use to
+              display our totals on the top of the page.<br /><br />We clear the
+              html for all four elements and then follow that up with setting
+              the html to our respective values, again fixing the decimals to 2.
             </p>
           </div>
         </div>
