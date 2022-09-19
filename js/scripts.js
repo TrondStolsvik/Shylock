@@ -12,6 +12,11 @@ function getValues() {
   //Get the value from interest rate and store it in a variable
   let interestRate = document.getElementById("interestRate").value;
 
+  //Parse loanAmount, term and interestRate to integers and/or float
+  loanAmount = parseFloat(loanAmount);
+  term = parseInt(term);
+  interestRate = parseFloat(interestRate);
+
   //Declare a variable currentTerm and initialize to 0
   let currentTerm = 0;
 
@@ -19,12 +24,12 @@ function getValues() {
   let totalInterest = 0;
 
   //Declare a variable as previousBalance and initialize to 0
-  let previousBalance = 0;
+  let previousBalance = loanAmount;
 
   //If-statement to check if previous balance is equal to 0
-  if (previousBalance == 0) {
+  if (previousBalance == loanAmount) {
     //If true, for-loop through the length of term
-    for (let i = 0; i <= term.length; i++) {
+    for (let i = 0; i < term; i++) {
       //Increment currentTerm += 1
       currentTerm += 1;
 
@@ -40,7 +45,7 @@ function getValues() {
       let paymentsMonth = monthlyPayments(loanAmount, term, interestRate);
 
       //Declare a variable priPay and store the result of monthlyPayments - monthlyInterest
-      let priPay = monthlyPayments - monthlyInterest;
+      let priPay = paymentsMonth - interestMonth;
 
       //Update previousBalance to be the result of previous balance - priPay
       previousBalance = previousBalance - priPay;
@@ -76,8 +81,8 @@ function monthlyPayments(loanAmount, term, interestRate) {
   //Declare variable monthPay as
   //"(loan amount) * (interest rate / 1200) / (1 - (1 + (interest rate / 1200)**(-term)"
   let monthPay =
-    (loanAmount * (interestRate / 1200)) /
-    (1 - (1 + (interestRate / 1200) ** -term));
+    (loanAmount * (interestRate / 1200)) / 1 -
+    (1 + interestRate / 1200) ** -term;
 
   //return monthPay
   return monthPay;
@@ -85,7 +90,6 @@ function monthlyPayments(loanAmount, term, interestRate) {
 
 //Display the header totals and table
 function displayLoan(
-  term,
   currentTerm,
   paymentsMonth,
   priPay,
