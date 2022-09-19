@@ -53,7 +53,6 @@ function getValues() {
       //Call displayLoan() using
       //term, currentTerm, paymentsMonth, priPay, interestMonth, totalInterest and previousBalance
       displayLoan(
-        term,
         currentTerm,
         paymentsMonth,
         priPay,
@@ -81,8 +80,8 @@ function monthlyPayments(loanAmount, term, interestRate) {
   //Declare variable monthPay as
   //"(loan amount) * (interest rate / 1200) / (1 - (1 + (interest rate / 1200)**(-term)"
   let monthPay =
-    (loanAmount * (interestRate / 1200)) / 1 -
-    (1 + interestRate / 1200) ** -term;
+    (loanAmount * (interestRate / 1200)) /
+    (1 - (1 + interestRate / 1200) ** -term);
 
   //return monthPay
   return monthPay;
@@ -111,11 +110,11 @@ function displayLoan(
 
   //Model the row one column at a time and store the data from the parameters in sequence
   rowCols[0].textContent = currentTerm;
-  rowCols[1].textContent = paymentsMonth;
-  rowCols[2].textContent = priPay;
-  rowCols[3].textContent = interestMonth;
-  rowCols[4].textContent = totalInterest;
-  rowCols[5].textContent = previousBalance;
+  rowCols[1].textContent = `$${paymentsMonth.toFixed(2)}`;
+  rowCols[2].textContent = `$${priPay.toFixed(2)}`;
+  rowCols[3].textContent = `$${interestMonth.toFixed(2)}`;
+  rowCols[4].textContent = `$${totalInterest.toFixed(2)}`;
+  rowCols[5].textContent = `$${Math.abs(previousBalance.toFixed(2))}`;
 
   //Append the tableRow to the tableBody
   tableBody.appendChild(tableRow);
